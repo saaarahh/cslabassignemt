@@ -17,12 +17,12 @@ private:
     int time;
     char type;
 public:
-    patient(string p, char g, int t, char ty) 
+   patient() 
     {
-        patientId = p;
-        gender = g;
-        time = t;
-        type = ty;
+        patientId = "";
+        gender = 'M';
+        time = "";
+        type = 'U';
     }
     void isIDvalidated(string s) // validates the id length is 14 and the numbers are from 0 to 9
     {
@@ -60,6 +60,48 @@ public:
        int minutes = (t[3] - '0') * 10 + (t[4] - '0');
        return (hours * 60) + minutes;
 
+
+    }
+ void Random()
+        {
+        patient p;
+        if (rand() % 2)
+        {
+            p.gender = 'M';
+        }
+        else {
+            p.gender = 'F';
+        }
+        if (rand() % 2)
+        {
+            p.gender = 'U';
+        }
+        else {
+             p.gender = 'N';
+        }
+      
+        for (int i = 0; i < 14; i++)
+        {
+            p.patientId[i] = rand()%10;
+        }
+         
+        int hours = rand() % 24;
+        int minutes = rand() % 60;
+        if (hours < 10)
+        {
+            p.time = "0" + to_string(hours) + ":" + to_string(minutes);
+        }
+        else {
+            p.time = to_string(hours) + ":" + to_string(minutes);
+        }
+        
+        if (minutes < 10)
+        {
+            p.time = to_string(hours) + ":" + "0" + to_string(minutes);
+        }
+        else {
+            p.time = to_string(hours) + ":" + to_string(minutes);
+        }
 
     }
 };
