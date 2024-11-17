@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <queue>
 
 using namespace std;
 
@@ -54,7 +55,26 @@ public:
     }
     
 };
+class queueing_system{
+    private:
+    queue<patient> urgentQueue; 
+    queue<patient> normalQueue;
+    char patient_status; 
 
+    public:
+    void add_to_list(const patient& p){
+        if (patient_status == 'u'|| patient_status == 'U'){
+            urgentQueue.push(p);
+        }else if (patient_status=='N' || patient_status =='n'){
+             normalQueue.push(p);
+        }else {
+            cout<<"error should either be normal or urgent"
+        }
+        cout<< "Patient"<<patient_id<<""
+    }
+    
+
+};
 
 
 int main()
