@@ -65,22 +65,63 @@ public:
 };
 class queueing_system{
     private:
-    queue<patient> urgentQueue; 
-    queue<patient> normalQueue;
+    queue<patient> urgentqueue; 
+    queue<patient> normalqueue;
     char patient_status; 
 
     public:
     void add_to_list(const patient& p){
         if (patient_status == 'u'|| patient_status == 'U'){
-            urgentQueue.push(p);
+            urgentqueue.push(p);
         }else if (patient_status=='N' || patient_status =='n'){
-             normalQueue.push(p);
+             normalqueue.push(p);
         }else {
             cout<<"error should either be normal or urgent"
         }
-        
-    
+        cout<< "Patient"<<patient_id<<""
+    }
+    void next (){
+        if (urgentqueue.empty()== false){
+            patient next_p = urgentqueue.front();
+            uregentqueue.pop();
+            cout<<"current patient of type urgent"<<next.patientId<< "at: "<<next.time<<endl;
+        }else if (normalqueue.empty()== false){
+            patient next_p = normalqueue.front();
+            normalqueue.pop();
+            cout<<"current patient of type normal"<<next.patientId<< "at: "<<next.time<<endl;
 
+        }else{
+            cout<<"no patients waiting"<<endl;
+        }
+    }
+    void print(){
+        cout<<"current waiting queue in clinic for urgent patients: "<<endl;
+        cout<<" urgent patients waiting queue: ";
+        if (urgentqueue.empty()== true){
+            cout<<"0"<<endl;
+        }else{
+            queue<patient> temp = urgentqueue;
+            while (temp.empty()== false){
+                cout<<temp.front().patientId<<" "<<endl;
+                temp.pop();
+            }
+
+        cout<<"current waiting queue in clinic for normal patients: "<<endl;
+        if (normalqueue.empty()== true){
+            cout<<"0"<<endl;
+        }else{
+            queue<patient> temp1 = urgentqueue;
+            while (temp1.empty()== false){
+                cout<<temp1.front().patientId<<" "<<endl;
+                temp1.pop();
+            }
+
+
+        }
+
+    }
+
+}
 };
 
 
