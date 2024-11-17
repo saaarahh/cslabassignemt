@@ -53,7 +53,15 @@ public:
         return type;
 
     }
-    
+     int  extractTime(string t)
+    {
+       
+       int hours= (t[0] - '0') * 10 + (t[1] - '0');
+       int minutes = (t[3] - '0') * 10 + (t[4] - '0');
+       return (hours * 60) + minutes;
+
+
+    }
 };
 class queueing_system{
     private:
