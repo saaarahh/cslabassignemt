@@ -70,8 +70,7 @@ class queueing_system{
         }else {
             cout<<"error should either be normal or urgent"
         }
-        cout<< "Patient"<<patient_id<<""
-    }
+        
     
 
 };
