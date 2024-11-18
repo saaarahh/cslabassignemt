@@ -109,58 +109,89 @@ class queueing_system{
     private:
     queue<patient> urgentqueue; 
     queue<patient> normalqueue;
-    char patient_status; 
+    int max_time; // when i do it as a const i get an error, why?
+   char patient_status;
 
     public:
+    queueing_system(){
+        max_time = 10;
+    }
     void add_to_list(const patient& p){
         if (patient_status == 'u'|| patient_status == 'U'){
             urgentqueue.push(p);
         }else if (patient_status=='N' || patient_status =='n'){
              normalqueue.push(p);
-        }else {
-            cout<<"error should either be normal or urgent"
         }
-        cout<< "Patient"<<patient_id<<""
     }
-    void next (){
+    // void next (){ // ask if we need this if not delete
+    //     if (urgentqueue.empty()== false){
+    //         patient next_p = urgentqueue.front();
+    //         uregentqueue.pop();
+    //         cout<<"current patient of type urgent"<<next.patientId<< "at: "<<next.time<<endl;
+    //     }else if (normalqueue.empty()== false){
+    //         patient next_p = normalqueue.front();
+    //         normalqueue.pop();
+    //         cout<<"current patient of type normal"<<next.patientId<< "at: "<<next.time<<endl;
+
+    //     }else{
+    //         cout<<"no patients waiting"<<endl;
+    //     }
+    // }
+    // void print(){ // ask if we need this
+    //     cout<<"current waiting queue in clinic for urgent patients: "<<endl;
+    //     cout<<" urgent patients waiting queue: ";
+    //     if (urgentqueue.empty()== true){
+    //         cout<<"0"<<endl;
+    //     }else{
+    //         queue<patient> temp = urgentqueue;
+    //         while (temp.empty()== false){
+    //             cout<<temp.front().patientId<<" "<<endl;
+    //             temp.pop();
+    //         }
+
+    //     cout<<"current waiting queue in clinic for normal patients: "<<endl;
+    //     if (normalqueue.empty()== true){
+    //         cout<<"0"<<endl;
+    //     }else{
+    //         queue<patient> temp1 = urgentqueue;
+    //         while (temp1.empty()== false){
+    //             cout<<temp1.front().patientId<<" "<<endl;
+    //             temp1.pop();
+    //         }
+
+
+    //     }
+
+    // }
+
+
+void time_constraints (int current_time ){
+    while (current_time>0){
         if (urgentqueue.empty()== false){
-            patient next_p = urgentqueue.front();
-            uregentqueue.pop();
-            cout<<"current patient of type urgent"<<next.patientId<< "at: "<<next.time<<endl;
+            patient new_p = urgentqueue.front();
+             urgentqueue.pop();
+
+             int time;
+             if (current_time<max_time){
+                time = current_time;
+             }else{
+                time = max_time;
+             }
+             current_time-=time;
         }else if (normalqueue.empty()== false){
-            patient next_p = normalqueue.front();
-            normalqueue.pop();
-            cout<<"current patient of type normal"<<next.patientId<< "at: "<<next.time<<endl;
+            patient new_p = normalqueue.front();
+             normalqueue.pop();
 
+             int time;
+             if (current_time<max_time){
+                time = current_time;
+             }else{
+                time = max_time;
+             }
+             current_time-=time;
         }else{
-            cout<<"no patients waiting"<<endl;
+            break;
         }
-    }
-    void print(){
-        cout<<"current waiting queue in clinic for urgent patients: "<<endl;
-        cout<<" urgent patients waiting queue: ";
-        if (urgentqueue.empty()== true){
-            cout<<"0"<<endl;
-        }else{
-            queue<patient> temp = urgentqueue;
-            while (temp.empty()== false){
-                cout<<temp.front().patientId<<" "<<endl;
-                temp.pop();
-            }
-
-        cout<<"current waiting queue in clinic for normal patients: "<<endl;
-        if (normalqueue.empty()== true){
-            cout<<"0"<<endl;
-        }else{
-            queue<patient> temp1 = urgentqueue;
-            while (temp1.empty()== false){
-                cout<<temp1.front().patientId<<" "<<endl;
-                temp1.pop();
-            }
-
-
-        }
-
     }
 
 }
