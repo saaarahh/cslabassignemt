@@ -196,6 +196,89 @@ void time_constraints (int current_time ){
 
 }
 };
+class requirments{
+    private:
+    vector<patient> p;
+     queueing_system system;
+     vector<int> wait_time;
+     int time_current;
+     int total_wait_time;
+     int n_served;
+
+     public:
+     requirments(){
+        time_current =0;
+        total_wait_time =0;
+        n_served =0;
+        
+     }
+     void generate_patients(int count){
+        p.clear();
+        for (int i=0;i<count;++i){
+            patient p1;
+            p1.Random(i+1);
+            p.push_back(p1);
+        }
+     }
+     void remove_patient(){
+        for (size_t i=0; i<p.size();++i){
+            if (p[i].time<=time_current){
+                system.add_to_list(p[i]){
+                    //i don't know how to continue 
+                }
+            }
+        }
+     }
+     void serve_patient(){
+        int N = (time_current % 6)+5;
+        int served = 0;
+
+        while (urgentqueue.empty()== false && served<N){
+            patient p1 = urgentqueue.front();
+            urgentqueue.pop();
+
+            int wait_time = time_current - p.time;
+            total_wait_time += wait_time;
+
+            cout<<"serving urgent patient: "<<endl;
+            cout<<"Arrival time: "<<p.time<<endl;
+            cout<<"waiting time: "<<wait_time<<endl;
+
+            ++served;
+            
+
+        }
+     
+      while (normalqueue.empty()== false && served<N){
+            patient p1 = normalqueue.front();
+            normalqueue.pop();
+
+            int wait_time = time_current - p.time;
+            total_wait_time += wait_time;
+
+            cout<<"serving normal patient: "<<endl;
+            cout<<"Arrival time: "<<p.time<<endl;
+            cout<<"waiting time: "<<wait_time<<endl;
+
+            ++served;
+            
+
+        }
+        n_served += served;
+     }
+     void simulation(int step){
+        for(time_current =0; time_current<step;++time_current){
+            serve_patient();
+            remove_patient();
+        }
+     }
+     void stat()const{
+        cout<<"total patient served: "<<n_served<<endl;
+        cout<<"average wait time: "<< n_served/total_wait_time<<endl;
+        
+     }
+
+};
 
 
 int main()
