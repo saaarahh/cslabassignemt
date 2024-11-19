@@ -19,9 +19,8 @@ private:
     char gender;
     string time;
     char type;
-    //int depTIME;
     time_point<steady_clock> arrived_time;
-     time_point<steady_clock> depart_time;
+    time_point<steady_clock> depart_time;
 public:
     patient(string p, char g,string t,char ty)
     {
@@ -29,7 +28,7 @@ public:
         gender = g;
         time = t;
         type = ty;
-        //depTIME = d;
+        
 
     }
     void set_arrived_time(){
@@ -55,22 +54,7 @@ public:
             cout<<"error: "<<e.what()<<endl;
         }
     }
-    // void isIDvalidated(string s) // validates the id length is 14 and the numbers are from 0 to 9
-    // {
-    //     for (int i = 0; i < s.length(); i++)
-    //     {
-    //         if (s[i] < '0' || s[i]>'9')
-    //         {
-    //             cout << "Error: ID is invalid" << endl;
-    //         }
-    //     }
-    //     if (s.length() != 14)
-    //     {
-    //         cout << "Error: ID is not validated. Another Id will be generated" << endl;
-
-    //     }
-
-    // }
+    
     string getPatientId()
     {
         return patientId;
@@ -97,14 +81,7 @@ public:
     {
         return time;
     }
-    // void setdepTIME(int s)
-    // {    
-    //     depTIME = s;
-    // }
-    // int getdepTIME() 
-    // {
-    //     return depTIME;
-    // }
+    
     patient Random()
     {
       
@@ -155,13 +132,11 @@ class queueing_system {
 private:
     queue<patient> urgentqueue;
     queue<patient> normalqueue;
-    const int max_time=10; // when i do it as a const i get an error, why?
+    const int max_time=10; 
    
 
 public:
-    // queueing_system() {
-    //     max_time = 10;
-    // }
+    
     void add_to_list( patient& p) {
         if ( p.getType() == 'U') {
             urgentqueue.push(p);
@@ -251,11 +226,7 @@ public:
         avg = 0.0;
 
     }
-    // static bool checktime(patient p1, patient p2) //we check to the arrival time of patients to see how arrived first
-    // {
-    //     return (p1.extractTime(p1.getTime()) < p2.extractTime(p2.getTime()));
-
-    // }
+    
     void generate_patients(int count) {
         for (int i = 0; i < count; ++i) 
         {
@@ -284,8 +255,7 @@ public:
             int waiting_time = p.wait_time();
             total_wait_time+=waiting_time;
             cout<<"served patient ID: "<<p.getPatientId()<<" , wait time: "<<waiting_time<< " seconds"<<endl;
-            // total_wait_time+= finalp[i].getdepTIME() - finalp[i].extractTime(finalp[i].getTime());
-            // cout << "served patient id: " << finalp[i].getPatientId() << endl;
+            
         }
         n_served += finalp.size();
         avg=total_wait_time / n_served;
@@ -296,7 +266,7 @@ public:
     
     
     void display() 
-    { // we need to print avg waiting time, total number of patients, number of urgent cases,and number of normal cases.
+    { 
         cout << "average waiting time= " << avg <<" seconds" <<endl;
         cout << "total number of patients= " << n_served << endl;
         cout << "number of urgent cases= " << system.getsizeUrgent() << endl;
