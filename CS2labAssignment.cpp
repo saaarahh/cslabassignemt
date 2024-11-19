@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,8 +6,10 @@
 #include<algorithm>
 #include<cstdlib>
 #include<ctime>
+#include<chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 class patient
 {
@@ -18,15 +18,27 @@ private:
     char gender;
     string time;
     char type;
-    int depTIME;
+    //int depTIME;
+    time_point<steady_clock> arrived_time;
+     time_point<steady_clock> depart_time;
 public:
-    patient(string p, char g,string t,char ty, int d)
+    patient(string p, char g,string t,char ty)
     {
         patientId = p;
         gender = g;
         time = t;
         type = ty;
-        depTIME = d;
+        //depTIME = d;
+
+    }
+    void set_arrived_time(){
+        arrived_time = steady_clock::now();
+    }
+    void set_departure_time(){
+        depart_time = steady_clock::now();
+    }
+    int wait_time()const{
+        return duration_cast<seconds>(depart_time - arrived_time).count();
     }
     void isIDvalidated(string s) // validates the id length is 14 and the numbers are from 0 to 9
     {
@@ -70,14 +82,14 @@ public:
     {
         return time;
     }
-    void setdepTIME(int s)
-    {    
-        depTIME = s;
-    }
-    int getdepTIME() 
-    {
-        return depTIME;
-    }
+    // void setdepTIME(int s)
+    // {    
+    //     depTIME = s;
+    // }
+    // int getdepTIME() 
+    // {
+    //     return depTIME;
+    // }
     patient Random()
     {
       
@@ -119,7 +131,8 @@ public:
         else {
            time = to_string(hours) + ":" + to_string(minutes);
         }
-        patient p(patientId,gender,time,type,depTIME=0);
+        set_arrived_time();
+        patient p(patientId,gender,time,type);
         return p;
     }
 };
@@ -150,7 +163,7 @@ public:
         while (!urgentqueue.empty() && n > 0)
         {
             patient healed = urgentqueue.front();
-            healed.setdepTIME(2); // takes the current time
+            healed.set_departure_time(); // takes the current time
             healedPatients.push_back(healed);
             urgentqueue.pop();
             n--;
@@ -158,7 +171,7 @@ public:
         while (!normalqueue.empty() && n > 0)
         {
             patient healed = normalqueue.front();
-            healed.setdepTIME(2); // takes the current time
+            healed.set_arrived_time(); // takes the current time
             healedPatients.push_back(healed);
             normalqueue.pop();
             n--;
@@ -210,35 +223,35 @@ private:
     vector<patient> finalp;
     queueing_system system;
     vector<int> wait_time;
-    int time_current;
+    //int time_current;
     int total_wait_time;
     int n_served;
     double avg;
 
 public:
     wholeProgram() {
-        time_current = 0;
+        //time_current = 0;
         total_wait_time = 0;
         n_served = 0;
         avg = 0.0;
 
     }
-    static bool checktime(patient p1, patient p2) //we check to the arrival time of patients to see how arrived first
-    {
-        return (p1.extractTime(p1.getTime()) < p2.extractTime(p2.getTime()));
+    // static bool checktime(patient p1, patient p2) //we check to the arrival time of patients to see how arrived first
+    // {
+    //     return (p1.extractTime(p1.getTime()) < p2.extractTime(p2.getTime()));
 
-    }
+    // }
     void generate_patients(int count) {
         for (int i = 0; i < count; ++i) 
         {
-            patient p1("",'F',"",'U',0);// this is dummy data
+            patient p1("",'F',"",'U');// this is dummy data
             p1.Random();
             p.push_back(p1);
             
             //cout<<i;
         }
         
-        sort(p.begin(), p.end(), checktime);
+        //sort(p.begin(), p.end(), checktime);
     }
     
 
@@ -251,13 +264,16 @@ public:
             cout<<"no patients served in this cycle"<<endl;
         }
         cout<<"number of served patients "<<finalp.size()<<endl;
-        for (int i = 0; i < finalp.size(); i++)
+        for (auto& p:finalp)
         {
-            total_wait_time+= finalp[i].getdepTIME() - finalp[i].extractTime(finalp[i].getTime());
-            cout << "served patient id: " << finalp[i].getPatientId() << endl;
+            int waiting_time = p.wait_time();
+            total_wait_time+=waiting_time;
+            cout<<"served patient ID: "<<p.getPatientId()<<" , wait time: "<<waiting_time<< " seconds"<<endl;
+            // total_wait_time+= finalp[i].getdepTIME() - finalp[i].extractTime(finalp[i].getTime());
+            // cout << "served patient id: " << finalp[i].getPatientId() << endl;
         }
         n_served += finalp.size();
-        avg=total_wait_time / finalp.size();
+        avg=total_wait_time / n_served;
         system.printUrgentqueue();
         system.printNormalqueue();
     }
@@ -266,7 +282,7 @@ public:
     
     void display() 
     { // we need to print avg waiting time, total number of patients, number of urgent cases,and number of normal cases.
-        cout << "average waiting time= " << avg << endl;
+        cout << "average waiting time= " << avg <<" seconds" <<endl;
         cout << "total number of patients= " << n_served << endl;
         cout << "number of urgent cases= " << system.getsizeUrgent() << endl;
         cout << "number of normal cases= " << system.getsizeNormal() << endl;
