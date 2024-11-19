@@ -1,10 +1,14 @@
 
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdexcept>
 #include <queue>
-#include<bits/stdc++.h>
+#include<algorithm>
+#include<cstdlib>
+#include<ctime>
+
 using namespace std;
 
 class patient
@@ -91,10 +95,11 @@ public:
         else {
            type = 'N';
         }
+        patientId = string(14, '0');
 
         for (int i = 0; i < 14; i++)
         {
-           patientId[i] = rand() % 10;
+           patientId[i] = '0'+(rand() % 10);
         }
 
         int hours = rand() % 24;
@@ -122,13 +127,13 @@ class queueing_system {
 private:
     queue<patient> urgentqueue;
     queue<patient> normalqueue;
-    int max_time; // when i do it as a const i get an error, why?
+    const int max_time=10; // when i do it as a const i get an error, why?
    
 
 public:
-    queueing_system() {
-        max_time = 10;
-    }
+    // queueing_system() {
+    //     max_time = 10;
+    // }
     void add_to_list( patient& p) {
         if ( p.getType() == 'U') {
             urgentqueue.push(p);
@@ -140,7 +145,7 @@ public:
     }
     vector<patient> Serving(int n)
     {
-        cout<<"in serving"<<endl;
+        //cout<<"in serving"<<endl;
         vector <patient> healedPatients;
         while (!urgentqueue.empty() && n > 0)
         {
@@ -178,7 +183,7 @@ public:
         
          while (!temp.empty())
         {
-            cout << temp.front().getPatientId() << " " << endl;
+            cout << "urgent patients id's = "<< temp.front().getPatientId() << " " << endl;
             temp.pop();
         }
            
@@ -191,7 +196,7 @@ public:
 
         while (!temp.empty())
         {
-            cout << temp.front().getPatientId() << " " << endl;
+            cout << "normal patient id's = "<<temp.front().getPatientId() << " " << endl;
             temp.pop();
         }
 
@@ -215,6 +220,7 @@ public:
         time_current = 0;
         total_wait_time = 0;
         n_served = 0;
+        avg = 0.0;
 
     }
     static bool checktime(patient p1, patient p2) //we check to the arrival time of patients to see how arrived first
@@ -228,26 +234,29 @@ public:
             patient p1("",'F',"",'U',0);// this is dummy data
             p1.Random();
             p.push_back(p1);
-            cout<<"in for"<<endl;
-            cout<<i;
+            
+            //cout<<i;
         }
-        cout<<"out for"<<endl;
+        
         sort(p.begin(), p.end(), checktime);
     }
     
 
     void simulation(int n) {
-        cout<<"in simulation"<<endl;
+        
         for(int i=0;i<p.size();i++)
         { system.add_to_list(p[i]);}
         finalp= system.Serving(n);
-        cout<<"finalp "<<finalp.size()<<endl;
+        if(finalp.empty()){
+            cout<<"no patients served in this cycle"<<endl;
+        }
+        cout<<"number of served patients "<<finalp.size()<<endl;
         for (int i = 0; i < finalp.size(); i++)
         {
             total_wait_time+= finalp[i].getdepTIME() - finalp[i].extractTime(finalp[i].getTime());
             cout << "served patient id: " << finalp[i].getPatientId() << endl;
         }
-        n_served = finalp.size();
+        n_served += finalp.size();
         avg=total_wait_time / finalp.size();
         system.printUrgentqueue();
         system.printNormalqueue();
@@ -277,7 +286,7 @@ int main()
     wholeProgram p;
     if (value == 1)
     {
-cout<<"hello"<<endl;
+
         p.generate_patients(100);
       
 
