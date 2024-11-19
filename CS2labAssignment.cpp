@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -40,22 +41,36 @@ public:
     int wait_time()const{
         return duration_cast<seconds>(depart_time - arrived_time).count();
     }
-    void isIDvalidated(string s) // validates the id length is 14 and the numbers are from 0 to 9
-    {
-        for (int i = 0; i < s.length(); i++)
-        {
-            if (s[i] < '0' || s[i]>'9')
-            {
-                cout << "Error: ID is invalid" << endl;
-            }
+    void isIDvalidated(string s){
+        try{
+        if (s.length()!=14){
+            throw invalid_argument("ID lenght must be 14");
         }
-        if (s.length() != 14)
-        {
-            cout << "Error: ID is not validated. Another Id will be generated" << endl;
-
+        for (char c:s){
+             if (c < '0' || c > '9'){
+                throw invalid_argument("ID should only contain digits from 0 to 9");
+             }
         }
-
+        }catch (const invalid_argument& e ){
+            cout<<"error: "<<e.what()<<endl;
+        }
     }
+    // void isIDvalidated(string s) // validates the id length is 14 and the numbers are from 0 to 9
+    // {
+    //     for (int i = 0; i < s.length(); i++)
+    //     {
+    //         if (s[i] < '0' || s[i]>'9')
+    //         {
+    //             cout << "Error: ID is invalid" << endl;
+    //         }
+    //     }
+    //     if (s.length() != 14)
+    //     {
+    //         cout << "Error: ID is not validated. Another Id will be generated" << endl;
+
+    //     }
+
+    // }
     string getPatientId()
     {
         return patientId;
